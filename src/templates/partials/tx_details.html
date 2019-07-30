@@ -50,7 +50,7 @@
 
         <tr>
             <td colspan="3" style="max-width:700px">Extra: {{extra}}</td>
-	    <td>Suspicious: {{suspicious}}</td>
+	    <td>Juvinile: {{juvinile}}</td>
         </tr>
 
 
@@ -77,10 +77,11 @@
 
     {{^have_raw_tx}}
 
-{{#suspicious}}
+{{#juvinile}}
 	<h3>This is a warning message</h3>
-	<p>Hey</p>
-{{/suspicious}}
+	<p>One of the ring members is younger than the lock time in the reference wallet, which enables software fingerprinting and may allow and adversary to infer the true TXO being spent.
+</p>
+{{/juvinile}}
     <div class="center" style="width:90%">
         <div class="tabs">
 

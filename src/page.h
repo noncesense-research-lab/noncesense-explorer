@@ -253,6 +253,8 @@ struct tx_details
     uint64_t blk_height;
     size_t   version;
 
+    bool juvinile;
+
     bool has_additional_tx_pub_keys {false};
 
     char     pID; // '-' - no payment ID,
@@ -324,7 +326,7 @@ struct tx_details
                 {"no_nonrct_inputs"  , num_nonrct_inputs},
                 {"mixin"             , mixin_str},
                 {"blk_height"        , blk_height},
-		{"suspicious"	     , suspicious},
+		{"juvinile"	     , juvinile},
                 {"version"           , static_cast<uint64_t>(version)},
                 {"has_payment_id"    , payment_id  != null_hash},
                 {"has_payment_id8"   , payment_id8 != null_hash8},
@@ -3066,7 +3068,6 @@ show_checkrawtx(string raw_tx_data, string action)
 
                 get_payment_id(tx_cd.extra, payment_id, payment_id8);
 
-		bool suspicious = false;
                 // payments id. both normal and encrypted (payment_id8)
                 string pid_str   = REMOVE_HASH_BRAKETS(fmt::format("{:s}", payment_id));
                 string pid8_str  = REMOVE_HASH_BRAKETS(fmt::format("{:s}", payment_id8));
@@ -3079,7 +3080,6 @@ show_checkrawtx(string raw_tx_data, string action)
                         {"has_payment_id"     , (payment_id  != null_hash)},
                         {"has_payment_id8"    , (payment_id8 != null_hash8)},
                         {"payment_id"         , pid_str},
-			{"suspicious"	      , suspicious},
                         {"payment_id8"        , pid8_str},
                 };
                 tx_cd_data.emplace("dest_sources" , mstch::array{});
@@ -6355,7 +6355,7 @@ construct_tx_context(transaction tx, uint16_t with_ring_signatures = 0)
             {"have_raw_tx"           , false},
             {"show_more_details_link", true},
             {"from_cache"            , false},
-	    {"suspicious"	     , false},
+	    {"juvinile"	     , false},
             {"construction_time"     , string {}},
     };
 
@@ -6369,7 +6369,7 @@ construct_tx_context(transaction tx, uint16_t with_ring_signatures = 0)
     string add_tx_pub_keys;
 
 
-    bool suspicious = false;
+    bool juvinile = false;
 
     for (auto const& apk: txd.additional_pks)
         add_tx_pub_keys += pod_to_hex(apk) + ";";
@@ -6384,8 +6384,8 @@ construct_tx_context(transaction tx, uint16_t with_ring_signatures = 0)
 
     uint64_t inputs_xmr_sum {0};
 
-	
-         vector<uint64_t> mixin_heights;  
+    
+    vector<uint64_t> mixin_heights;  
   // ringct inputs can be mixture of known amounts (when old outputs)
     // are spent, and unknown umounts (makrked in explorer by '?') when
     // ringct outputs are spent. thus we totalling input amounts
@@ -6610,7 +6610,7 @@ construct_tx_context(transaction tx, uint16_t with_ring_signatures = 0)
                // std::cout << "We have found the max element of this tx" << max_mix_blk << endl;
                 //tx_cd_data["suspicious"] = false;
                 if( tx_blk_height - max_mix_blk < 10){
-                        context["suspicious"] = true;
+                        context["juvinile"] = true;
                         //std::cout << "Suspicious transaction" << endl;
                 }
 
