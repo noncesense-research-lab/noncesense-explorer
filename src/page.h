@@ -6355,7 +6355,8 @@ construct_tx_context(transaction tx, uint16_t with_ring_signatures = 0)
             {"have_raw_tx"           , false},
             {"show_more_details_link", true},
             {"from_cache"            , false},
-	    {"juvinile"	     , false},
+	    {"juvinile"	     	     , false},
+	    {"one_output"	     , false},
             {"construction_time"     , string {}},
     };
 
@@ -6370,6 +6371,12 @@ construct_tx_context(transaction tx, uint16_t with_ring_signatures = 0)
 
 
     bool juvinile = false;
+    bool one_output = false;
+
+    uint64_t number_outputs = txd.output_pub_keys.size();
+    if(number_outputs < 2){
+       context["one_output"] = true;
+    }
 
     for (auto const& apk: txd.additional_pks)
         add_tx_pub_keys += pod_to_hex(apk) + ";";
@@ -6384,7 +6391,6 @@ construct_tx_context(transaction tx, uint16_t with_ring_signatures = 0)
 
     uint64_t inputs_xmr_sum {0};
 
-    
     vector<uint64_t> mixin_heights;  
   // ringct inputs can be mixture of known amounts (when old outputs)
     // are spent, and unknown umounts (makrked in explorer by '?') when
@@ -6436,8 +6442,7 @@ construct_tx_context(transaction tx, uint16_t with_ring_signatures = 0)
             // offsets given
             //core_storage->get_db().get_output_key(in_key.amount,
                                                   //absolute_offsets,
-                                                  //outputs);
-            
+                                                  //outputs)            
             get_output_key<BlockchainDB>(in_key.amount,
                                            absolute_offsets,
                                            outputs);
@@ -6488,7 +6493,6 @@ construct_tx_context(transaction tx, uint16_t with_ring_signatures = 0)
         }
 
         vector<uint64_t> mixin_timestamps;
-//	vector<uint64_t> mixin_heights;
         // get reference to mixins array created above
         mstch::array& mixins = boost::get<mstch::array>(
                 boost::get<mstch::map>(inputs.back())["mixins"]);
@@ -6607,8 +6611,6 @@ construct_tx_context(transaction tx, uint16_t with_ring_signatures = 0)
         uint64_t max_mix_timestamp {0};
 
  	uint64_t max_mix_blk = *max_element(mixin_heights.begin(), mixin_heights.end());
-               // std::cout << "We have found the max element of this tx" << max_mix_blk << endl;
-                //tx_cd_data["suspicious"] = false;
                 if( tx_blk_height - max_mix_blk < 10){
                         context["juvinile"] = true;
                         //std::cout << "Suspicious transaction" << endl;
