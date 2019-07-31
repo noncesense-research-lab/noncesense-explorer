@@ -1,8 +1,8 @@
 body {
     margin: 0;
     padding: 0;
-    color: white;
-    background-color: black;
+    color: #E2DCDE;
+    background-color: #173753;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -12,9 +12,7 @@ h1, h2, h3, h4, h5, h6 {
 .center {
     margin: auto;
     width: 96%;
-    /*border: 1px solid #73AD21;
-    padding: 10px;*/
-}
+ }
 
 tr, li, #pages, .info {
     font-family: "Lucida Console", Monaco, monospace;
@@ -138,4 +136,22 @@ div#decoded-inputs{
 /* Toggled State */
 input#toggle-1[type=checkbox]:checked ~ div#decoded-inputs {
     display: block;
+}
+
+.warning{
+        background-color: #F03A47;
+        color: #2d0101;
+        font-weight: 800;
+        margin-top: 10px;
+        margin-bottom: 10px;
+}
+
+.warning p{
+        margin-left: 40px;
+        margin-right:40px;
+}
+
+.warning h3{
+padding-top: 15px;
+padding-bottom: 15px;
 }
