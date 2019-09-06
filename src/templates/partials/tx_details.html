@@ -78,16 +78,21 @@
     {{^have_raw_tx}}
 
 {{#juvinile}}
-	<h3>This is a warning message</h3>
-	<p>One of the ring members is younger than the lock time in the reference wallet, which enables software fingerprinting and may allow and adversary to infer the true TXO being spent.
-</p>
+	<div class="warning">
+		<h3>This is a warning message</h3>
+		<p>One of the ring members is younger than the lock time in the reference wallet, which enables software fingerprinting and may allow and adversary to infer the true TXO being spent.
+		</p>
+	</div>
 {{/juvinile}}
 
 
 {{#one_output}}
-	<h3>This transaction contains less than 2 outputs</h3>
-	<p> This transaction has only one output, which (1) increases linkability risk, (2) reveals use of non-standard software, and (3) suggests that the transaction represents a wallet sweep or churn.</p>
+	<div class="warning">
+		<h3>This transaction contains less than 2 outputs</h3>
+		<p> This transaction has only one output, which (1) increases linkability risk, (2) reveals use of non-standard software, and (3) suggests that the transaction represents a wallet sweep or churn.</p>
+	</div>
 {{/one_output}}
+	
     <div class="center" style="width:90%">
         <div class="tabs">
 
